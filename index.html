@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story Page</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background-color: #007bff;
+      color: white;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    #upload-section {
+      margin-top: 30px;
+    }
+    input[type="file"] {
+      display: block;
+      margin-top: 10px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #verify-msg {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div id="balance">Balance: ₹0</div>
+    <div><a href="dashboard.html" style="color: white; text-decoration: none; font-weight: bold;">Dashboard</a></div>
+  </div>  <div class="container">
+    <h2>The Great Journey of Human Civilization</h2>
+    <p id="story">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim. Vestibulum malesuada volutpat orci, nec fermentum justo tristique nec. Curabitur dignissim purus a nisl dapibus, et lacinia sem dictum. Pellentesque finibus sapien ut quam rhoncus, in tincidunt ex blandit. Nam sagittis purus sed libero lacinia, nec blandit turpis tristique. Proin id nisl vitae mauris varius hendrerit. Vestibulum feugiat consectetur lorem, at sagittis purus facilisis in. Donec finibus libero non sem fermentum, eget dignissim mauris bibendum. Sed sagittis purus in pretium blandit. Mauris tincidunt dolor nec nisi sodales, nec finibus nisl vehicula. Duis tincidunt leo vitae purus convallis, nec facilisis elit rutrum. Integer sed ligula feugiat, pretium libero vitae, placerat lacus. Praesent varius tortor sed urna faucibus feugiat. Morbi volutpat tellus ut nisl mattis feugiat.(Repeated text here to simulate 1000+ words)
+  Lorem ipsum... (more)...
+</p>
+
+<div id="upload-section">
+  <h3>Upload your handwritten PDF of this story</h3>
+  <p>Our team will verify it in less than 1 hour. If verified, we will pay you ₹100 for this story.</p>
+  <input type="file" accept="application/pdf" id="pdfFile">
+  <button onclick="submitPDF()">Submit</button>
+  <div id="verify-msg"></div>
+</div>
+
+  </div>  <script>
+    const currentUser = localStorage.getItem("currentUser");
+    const users = JSON.parse(localStorage.getItem("users") || '{}');
+    if (!currentUser || !users[currentUser]) {
+      window.location.href = "index.html";
+    }
+
+    const balanceDisplay = document.getElementById("balance");
+    const verifyMsg = document.getElementById("verify-msg");
+    let user = users[currentUser];
+    let balance = user.balance || 0;
+    balanceDisplay.innerText = `Balance: ₹${balance}`;
+
+    function submitPDF() {
+      const file = document.getElementById("pdfFile").files[0];
+      if (!file) {
+        verifyMsg.innerText = "Please upload a PDF file.";
+        return;
+      }
+      verifyMsg.innerText = "Submitting... Please wait.";
+
+      setTimeout(() => {
+        verifyMsg.innerText = "Our team verified your PDF. ₹100 has been added to your balance.";
+        user.balance = (user.balance || 0) + 100;
+        localStorage.setItem("users", JSON.stringify(users));
+        balanceDisplay.innerText = `Balance: ₹${user.balance}`;
+      }, 300000); // 5 minutes = 300000 ms
+    }
+  </script></body>
+</html>
